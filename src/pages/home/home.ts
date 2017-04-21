@@ -4,6 +4,7 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { MusicControls } from '@ionic-native/music-controls';
 import { MediaPlugin, MediaObject } from '@ionic-native/media';
 //import { MediaPlugin } from 'ionic-native';
+import { Platform } from 'ionic-angular';
 
 @Component({
   selector: 'page-home',
@@ -14,10 +15,11 @@ export class HomePage {
   mediaFile: MediaObject;
   duration: number;
   position: number;
-  constructor(public navCtrl: NavController, 
-  private media: MediaPlugin,
-  private backgroundMode: BackgroundMode,
-  private musicControls:MusicControls) {
+  constructor(public navCtrl: NavController,
+    private media: MediaPlugin,
+    private backgroundMode: BackgroundMode,
+    private musicControls: MusicControls,
+    private platform: Platform) {
 
   }
   Play(): void {
@@ -25,20 +27,24 @@ export class HomePage {
     console.log(`music to play ${url}`);
     const onStatusUpdate = (status) => console.log(`Player status changed: ${status}`);
 
-    this.media.create(url, onStatusUpdate)
-      .then(result => {
-        console.log( "start to play");
-        console.log( url );
-        this.mediaFile = result;
+    this.platform.ready().then(() => {
 
-        this.mediaFile.play();
+      this.media.create(url, onStatusUpdate)
+        .then(result => {
+          console.log("start to play");
+          console.log(url);
+          this.mediaFile = result;
 
-        this.InitializePlayControls();
-        this.backgroundMode.enable();
+          this.mediaFile.play();
 
-      })
-      .catch(error=> console.log(error));
+          this.InitializePlayControls();
+          this.backgroundMode.enable();
 
+        })
+        .catch(error => console.log(error));
+
+
+    });
   }
   Pause(): void {
     if (this.mediaFile)
