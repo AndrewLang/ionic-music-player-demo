@@ -23,7 +23,9 @@ export class HomePage {
   Play(): void {
     let url = "https://s3.amazonaws.com/ionic-audio/Message+in+a+bottle.mp3";
     console.log(`music to play ${url}`);
-    this.media.create(url)
+    const onStatusUpdate = (status) => console.log(`Player status changed: ${status}`);
+
+    this.media.create(url, onStatusUpdate)
       .then(result => {
         console.log( "start to play");
         console.log( url );
