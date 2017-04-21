@@ -6,3 +6,5 @@ npm install --save @ionic-native/media
 
 ionic plugin add cordova-plugin-music-controls
 npm install --save @ionic-native/music-controls
+
+npm install @ionic-native/core --save
